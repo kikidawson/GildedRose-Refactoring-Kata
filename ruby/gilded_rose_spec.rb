@@ -55,12 +55,17 @@ describe GildedRose do
     end
 
     describe "Backstage passes" do
-      items = [ Item.new("Backstage passes to a TAFKAL80ETC concert", 15, 10) ]
+      items = [ Item.new("Backstage passes to a TAFKAL80ETC concert", 15, 10),Item.new("Backstage passes to a TAFKAL80ETC concert", 10, 10), Item.new("Backstage passes to a TAFKAL80ETC concert", 5, 10), Item.new("Backstage passes to a TAFKAL80ETC concert", 1, 10) ]
       GildedRose.new(items).update_quality()
 
-      it 'increases in quality' do
+      it 'increases in quality if 11 or more days to sell' do
         expect(items[0].sell_in).to eq 14
         expect(items[0].quality).to eq 11
+      end
+
+      it 'increases in quality by 2 if 10 or less days to sell' do
+        expect(items[1].sell_in).to eq 9
+        expect(items[1].quality).to eq 12
       end
     end
   end
