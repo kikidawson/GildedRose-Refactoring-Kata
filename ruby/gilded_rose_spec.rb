@@ -67,6 +67,11 @@ describe GildedRose do
         expect(items[1].sell_in).to eq 9
         expect(items[1].quality).to eq 12
       end
+
+      it 'increases in quality by 3 if 5 or less days to sell' do
+        expect(items[2].sell_in).to eq 4
+        expect(items[2].quality).to eq 13
+      end
     end
   end
 end
