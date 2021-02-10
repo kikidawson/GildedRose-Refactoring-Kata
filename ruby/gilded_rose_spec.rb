@@ -31,17 +31,21 @@ describe GildedRose do
     end
 
     describe 'Aged Brie' do
-      items = [ Item.new("Aged Brie", 10, 10), Item.new("Aged Brie", 10, 50) ]
-      GildedRose.new(items).update_quality()
+      items = [ Item.new("Aged Brie", 10, 45) ]
+      guilded_rose = GildedRose.new(items)
 
       it 'increases in quality' do
+        guilded_rose.update_quality()
+
         expect(items[0].sell_in).to eq 9
-        expect(items[0].quality).to eq 11
+        expect(items[0].quality).to eq 46
       end
 
       it 'quality never goes above 50' do
-        expect(items[1].sell_in).to eq 9
-        expect(items[1].quality).to eq 50
+        5.times { guilded_rose.update_quality() }
+
+        expect(items[0].sell_in).to eq 4
+        expect(items[0].quality).to eq 50
       end
     end
 
@@ -51,7 +55,7 @@ describe GildedRose do
 
       it 'never decreases in quality' do
         guilded_rose.update_quality()
-        
+
         expect(items[0].quality).to eq 80
       end
     end
