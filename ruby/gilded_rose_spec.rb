@@ -63,6 +63,7 @@ describe GildedRose do
       it 'never decreases in quality' do
         guilded_rose.update_quality()
 
+        expect(sulfuras.sell_in).to eq 0
         expect(sulfuras.quality).to eq 80
       end
     end
