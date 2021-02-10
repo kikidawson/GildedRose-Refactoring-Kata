@@ -9,19 +9,19 @@ describe GildedRose do
       expect(items[0].name).to eq "foo"
     end
 
-    describe 'standard items' do
+    describe 'Standard Item' do
       items = [Item.new("foo", 10, 10), Item.new("bar", 0, 10), Item.new("baz", 10, 0) ]
       GildedRose.new(items).update_quality()
 
-      it "decreases sell_in by one before sell by" do
+      it "decrease sell_in by one before sell by" do
         expect(items[0].sell_in).to eq 9
       end
 
-      it "decreases quality by one before sell by" do
+      it "decrease quality by one before sell by" do
         expect(items[0].quality).to eq 9
       end
 
-      it "decreases quality by two after sell by" do
+      it "decrease quality by two after sell by" do
         expect(items[1].quality).to eq 8
       end
 
@@ -31,12 +31,17 @@ describe GildedRose do
     end
 
     describe 'Aged Brie' do
-      items = [ Item.new("Aged Brie", 10, 10) ]
+      items = [ Item.new("Aged Brie", 10, 10), Item.new("Aged Brie", 10, 50) ]
       GildedRose.new(items).update_quality()
 
       it 'increases in quality' do
         expect(items[0].sell_in).to eq 9
         expect(items[0].quality).to eq 11
+      end
+
+      it 'quality never goes above 50' do
+        expect(items[1].sell_in).to eq 9
+        expect(items[1].quality).to eq 50
       end
     end
   end
