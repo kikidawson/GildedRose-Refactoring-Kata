@@ -6,40 +6,62 @@ class GildedRose
 
   def update_quality()
     @items.each do |item|
-      return if item.name == "Sulfuras, Hand of Ragnaros"
+      find_logic(item)
+    end
+  end
 
-      if item.name == "Aged Brie"
-        if item.quality < 50
-          item.quality += 1
-        end
-        return item.sell_in -= 1
-      elsif item.name == "Backstage passes to a TAFKAL80ETC concert"
-        if item.quality < 50
-          if item.sell_in < 1
-            item.quality = 0
-          elsif item.sell_in < 6
-            item.quality += 3
-          elsif item.sell_in < 11
-            item.quality += 2
-          else
-            item.quality += 1
-          end
-        end
-        item.sell_in -= 1
+  private
+
+  def maximum_quality?(item)
+    item.quality == 50
+  end
+
+  def minimum_quality?(item)
+    item.quality == 0
+  end
+
+  def aged_brie_logic(item)
+    if !maximum_quality?(item)
+      item.quality += 1
+    end
+    item.sell_in -= 1
+  end
+
+  def backstage_passes_logic(item)
+    if !maximum_quality?(item)
+      if item.sell_in < 1
+        item.quality = 0
+      elsif item.sell_in < 6
+        item.quality += 3
+      elsif item.sell_in < 11
+        item.quality += 2
+      else
+        item.quality += 1
       end
+    end
+    item.sell_in -= 1
+  end
 
-
-      if item.name != "Backstage passes to a TAFKAL80ETC concert"  && item.name != "Aged Brie" && item.name != "Sulfuras, Hand of Ragnaros"
-        if item.quality > 0
-          item.quality = item.quality - 1
-        end
-        item.sell_in = item.sell_in - 1
-        if item.sell_in < 0
-          if item.quality > 0
-              item.quality = item.quality - 1
-          end
-        end
+  def standard_item_logic(item)
+    if item.sell_in > 0
+      item.quality -= 1
+    elsif item.sell_in <= 0
+      if !minimum_quality?(item)
+        item.quality -= 2
       end
+    end
+    item.sell_in -= 1
+  end
+
+  def find_logic(item)
+    case item.name
+    when "Sulfuras, Hand of Ragnaros"
+    when "Aged Brie"
+      aged_brie_logic(item)
+    when "Backstage passes to a TAFKAL80ETC concert"
+      backstage_passes_logic(item)
+    else
+      standard_item_logic(item)
     end
   end
 end
