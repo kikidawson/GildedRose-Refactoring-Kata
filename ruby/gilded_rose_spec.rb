@@ -46,11 +46,21 @@ describe GildedRose do
     end
 
     describe "Sulfuras" do
-      items = [ Item.new("Sulfuras, Hand of Ragnaros", 10, 80) ]
+      items = [ Item.new("Sulfuras, Hand of Ragnaros", 0, 80) ]
       GildedRose.new(items).update_quality()
 
       it 'never decreases in quality' do
         expect(items[0].quality).to eq 80
+      end
+    end
+
+    describe "Backstage passes" do
+      items = [ Item.new("Backstage passes to a TAFKAL80ETC concert", 15, 10) ]
+      GildedRose.new(items).update_quality()
+
+      it 'increases in quality' do
+        expect(items[0].sell_in).to eq 14
+        expect(items[0].quality).to eq 11
       end
     end
   end
