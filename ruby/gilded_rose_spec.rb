@@ -10,23 +10,28 @@ describe GildedRose do
     end
 
     describe 'Standard Item' do
-      items = [Item.new("foo", 10, 10), Item.new("bar", 0, 10), Item.new("baz", 10, 0) ]
-      GildedRose.new(items).update_quality()
+      items = [ Item.new("Standard Item", 4, 10) ]
+      guilded_rose = GildedRose.new(items)
 
-      it "decrease sell_in by one before sell by" do
-        expect(items[0].sell_in).to eq 9
-      end
+      it "decrease sell_in and quality by one before sell by" do
+        guilded_rose.update_quality()
 
-      it "decrease quality by one before sell by" do
+        expect(items[0].sell_in).to eq 3
         expect(items[0].quality).to eq 9
       end
 
       it "decrease quality by two after sell by" do
-        expect(items[1].quality).to eq 8
+        4.times { guilded_rose.update_quality() }
+
+        expect(items[0].sell_in).to eq -1
+        expect(items[0].quality).to eq 4
       end
 
       it 'quality doesnt drop below 0' do
-        expect(items[2].quality).to eq 0
+        3.times { guilded_rose.update_quality() }
+
+        expect(items[0].sell_in).to eq -4
+        expect(items[0].quality).to eq 0
       end
     end
 
