@@ -50,23 +50,23 @@ class GildedRose
   end
 
   def update_quality_of_backstage_passes(item)
-    return item.quality = 0 if sell_in(item, 0)
+    return item.quality = 0 if days_until_sell_by(item, 0)
     plus_quality(item)
-    plus_quality(item) if sell_in(item, 10)
-    plus_quality(item) if sell_in(item, 5)
+    plus_quality(item) if days_until_sell_by(item, 10)
+    plus_quality(item) if days_until_sell_by(item, 5)
   end
 
   def update_quality_of_conjured(item)
     minus_quality(item, 2)
-    minus_quality(item, 2) if sell_in(item, 0)
+    minus_quality(item, 2) if days_until_sell_by(item, 0)
   end
 
   def update_quality_of_standard_item(item)
     minus_quality(item, 1)
-    minus_quality(item, 1) if sell_in(item, 0)
+    minus_quality(item, 1) if days_until_sell_by(item, 0)
   end
 
-  def sell_in(item, days)
+  def days_until_sell_by(item, days)
     item.sell_in < days
   end
 
