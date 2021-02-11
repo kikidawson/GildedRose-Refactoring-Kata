@@ -6,47 +6,66 @@ class GildedRose
 
   def update_quality()
     @items.each do |item|
-      if item.name != "Sulfuras, Hand of Ragnaros"
-        item.sell_in -= 1
-        change_quality_if_between_zero_and_fifty(item)
-      end
+      update_sell_in_and_quality(item) unless sulfuras?(item)
     end
   end
 
   private
 
-  def aged_brie_logic(item)
-    item.quality += 1
+  def update_sell_in_and_quality(item)
+    item.sell_in -= 1
+    change_quality_if_between_zero_and_fifty(item)
   end
 
-  def backstage_passes_logic(item)
-    return item.quality = 0 if past_sell_by(item)
-    item.quality += 1
-    item.quality += 1 if item.sell_in < 10
-    item.quality += 1 if item.sell_in < 5
+  def sulfuras?(item)
+    item.name == "Sulfuras, Hand of Ragnaros"
   end
 
-  def standard_item_logic(item)
-    item.quality -= 1
-    item.quality -= 1 if past_sell_by(item)
+  def update_quality_of_aged_brie(item)
+    plus_quality(item)
+  end
+
+  def update_quality_of_backstage_passes(item)
+    return item.quality = 0 if sell_in(item, 0)
+    plus_quality(item)
+    plus_quality(item) if sell_in(item, 10)
+    plus_quality(item) if sell_in(item, 5)
+  end
+
+  def update_quality_of_standard_item(item)
+    minus_quality(item)
+    minus_quality(item) if sell_in(item, 0)
   end
 
   def find_logic(item)
-    if item.name == "Aged Brie"
-      aged_brie_logic(item)
-    elsif item.name == "Backstage passes to a TAFKAL80ETC concert"
-      backstage_passes_logic(item)
+    case item.name
+    when "Aged Brie"
+      update_quality_of_aged_brie(item)
+    when "Backstage passes to a TAFKAL80ETC concert"
+      update_quality_of_backstage_passes(item)
     else
-      standard_item_logic(item)
+      update_quality_of_standard_item(item)
     end
   end
 
-  def past_sell_by(item)
-    item.sell_in < 0
+  def sell_in(item, days)
+    item.sell_in < days
+  end
+
+  def minus_quality(item)
+    item.quality -= 1
+  end
+
+  def plus_quality(item)
+    item.quality += 1
   end
 
   def change_quality_if_between_zero_and_fifty(item)
-    find_logic(item) if item.quality.between?(1, 49)
+    find_logic(item) if quality_between_zero_and_fifty?(item)
+  end
+
+  def quality_between_zero_and_fifty?(item)
+    item.quality.between?(1, 49)
   end
 end
 

@@ -110,5 +110,34 @@ describe GildedRose do
         expect(backstage_passes.quality).to eq 0
       end
     end
+
+    describe 'Mutliple items provided' do
+      items = [
+        Item.new("Standard Item", 5, 10),
+        Item.new("Standard Item", 0, 10),
+        Item.new("Standard Item", 5, 0),
+        Item.new("Sulfuras, Hand of Ragnaros", 0, 80),
+        Item.new("Aged Brie", 10, 45),
+        Item.new("Aged Brie", 10, 50),
+        Item.new("Backstage passes to a TAFKAL80ETC concert", 20, 50),
+        Item.new("Backstage passes to a TAFKAL80ETC concert", 10, 10),
+        Item.new("Backstage passes to a TAFKAL80ETC concert", 5, 10),
+        Item.new("Backstage passes to a TAFKAL80ETC concert", 0, 10)
+      ]
+      guilded_rose = GildedRose.new(items)
+      guilded_rose.update_quality()
+
+      it "works when multiple items provided" do
+        expect(items[1].quality).to eq 8
+        expect(items[2].quality).to eq 0
+        expect(items[3].quality).to eq 80
+        expect(items[4].quality).to eq 46
+        expect(items[5].quality).to eq 50
+        expect(items[6].quality).to eq 50
+        expect(items[7].quality).to eq 12
+        expect(items[8].quality).to eq 13
+        expect(items[9].quality).to eq 0
+      end
+    end
   end
 end
