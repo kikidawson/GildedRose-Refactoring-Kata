@@ -18,10 +18,10 @@ class GildedRose
 
   def update_sell_in_and_quality(item)
     item.sell_in -= 1
-    update_quality(item) if item.quality.between?(1, 49)
+    update_quality_of(item) if item.quality.between?(1, 49)
   end
 
-  def update_quality(item)
+  def update_quality_of(item)
     if aged_brie?(item) || conjured_aged_brie?(item)
       update_quality_of_aged_brie(item)
     elsif backstage_passes?(item) || conjured_backstage_passes?(item)
