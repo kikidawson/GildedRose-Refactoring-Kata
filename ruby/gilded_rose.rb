@@ -17,8 +17,32 @@ class GildedRose
     change_quality_if_between_zero_and_fifty(item)
   end
 
+  def change_quality_if_between_zero_and_fifty(item)
+    find_logic(item) if item.quality.between?(1, 49)
+  end
+
+  def find_logic(item)
+    if aged_brie?(item)
+      update_quality_of_aged_brie(item)
+    elsif backstage_passes?(item)
+      update_quality_of_backstage_passes(item)
+    elsif item.name.start_with?("Conjured ")
+      update_quality_of_conjured(item)
+    else
+      update_quality_of_standard_item(item)
+    end
+  end
+
   def sulfuras?(item)
     item.name == "Sulfuras, Hand of Ragnaros"
+  end
+
+  def aged_brie?(item)
+    item.name == "Aged Brie"
+  end
+
+  def backstage_passes?(item)
+    item.name == "Backstage passes to a TAFKAL80ETC concert"
   end
 
   def update_quality_of_aged_brie(item)
@@ -32,40 +56,26 @@ class GildedRose
     plus_quality(item) if sell_in(item, 5)
   end
 
-  def update_quality_of_standard_item(item)
-    minus_quality(item)
-    minus_quality(item) if sell_in(item, 0)
+  def update_quality_of_conjured(item)
+    minus_quality(item, 2)
+    minus_quality(item, 2) if sell_in(item, 0)
   end
 
-  def find_logic(item)
-    case item.name
-    when "Aged Brie"
-      update_quality_of_aged_brie(item)
-    when "Backstage passes to a TAFKAL80ETC concert"
-      update_quality_of_backstage_passes(item)
-    else
-      update_quality_of_standard_item(item)
-    end
+  def update_quality_of_standard_item(item)
+    minus_quality(item, 1)
+    minus_quality(item, 1) if sell_in(item, 0)
   end
 
   def sell_in(item, days)
     item.sell_in < days
   end
 
-  def minus_quality(item)
-    item.quality -= 1
+  def minus_quality(item, quality_points)
+    item.quality -= quality_points
   end
 
   def plus_quality(item)
     item.quality += 1
-  end
-
-  def change_quality_if_between_zero_and_fifty(item)
-    find_logic(item) if quality_between_zero_and_fifty?(item)
-  end
-
-  def quality_between_zero_and_fifty?(item)
-    item.quality.between?(1, 49)
   end
 end
 
