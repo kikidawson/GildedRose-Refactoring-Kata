@@ -5,33 +5,35 @@ describe GildedRose do
   describe "#update_quality" do
 
     describe 'Standard Item' do
-      items = [ Item.new("Standard Item", 4, 10) ]
-      guilded_rose = GildedRose.new(items)
-      standard_item = items[0]
+      before(:each) do
+        items = [ Item.new("Standard Item", 4, 10) ]
+        @guilded_rose = GildedRose.new(items)
+        @standard_item = items[0]
+      end
 
       it "decrease sell_in and quality by one before sell by" do
-        guilded_rose.update_quality()
+        @guilded_rose.update_quality()
 
-        expect(standard_item.sell_in).to eq 3
-        expect(standard_item.quality).to eq 9
+        expect(@standard_item.sell_in).to eq 3
+        expect(@standard_item.quality).to eq 9
       end
 
       it "decrease quality by two after sell by" do
-        4.times { guilded_rose.update_quality() }
+        5.times { @guilded_rose.update_quality() }
 
-        expect(standard_item.sell_in).to eq -1
-        expect(standard_item.quality).to eq 4
+        expect(@standard_item.sell_in).to eq -1
+        expect(@standard_item.quality).to eq 4
       end
 
       it 'quality doesnt drop below 0' do
-        3.times { guilded_rose.update_quality() }
+        8.times { @guilded_rose.update_quality() }
 
-        expect(standard_item.sell_in).to eq -4
-        expect(standard_item.quality).to eq 0
+        expect(@standard_item.sell_in).to eq -4
+        expect(@standard_item.quality).to eq 0
       end
 
       it "does not change the name" do
-        expect(standard_item.name).to eq "Standard Item"
+        expect(@standard_item.name).to eq "Standard Item"
       end
     end
 
