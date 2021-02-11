@@ -38,11 +38,11 @@ class GildedRose
   end
 
   def aged_brie?(item)
-    item.name == "Aged Brie"
+    item.name.include?("Aged Brie")
   end
 
   def backstage_passes?(item)
-    item.name == "Backstage passes to a TAFKAL80ETC concert"
+    item.name.include?("Backstage passes to a TAFKAL80ETC concert")
   end
 
   def update_quality_of_aged_brie(item)

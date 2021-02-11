@@ -15,7 +15,9 @@ describe GildedRose do
       Item.new("Backstage passes to a TAFKAL80ETC concert", 5, 10),
       Item.new("Backstage passes to a TAFKAL80ETC concert", 0, 10),
       Item.new("Conjured Standard Item", 10, 10),
-      Item.new("Conjured Standard Item", 0, 10)
+      Item.new("Conjured Standard Item", 0, 10),
+      Item.new("Conjured Aged Brie", 10, 45),
+      Item.new("Conjured Backstage passes to a TAFKAL80ETC concert", 15, 10),
     ]
     guilded_rose = GildedRose.new(@items)
     guilded_rose.update_quality()
@@ -103,6 +105,16 @@ describe GildedRose do
       it 'degrades in quality by 4 after sell by' do
         expect(@items[12].sell_in).to eq -1
         expect(@items[12].quality).to eq 6
+      end
+
+      it 'conjured aged brie like normal aged brie' do
+        expect(@items[13].sell_in).to eq 9
+        expect(@items[13].quality).to eq 46
+      end
+
+      it 'conjured backstage passes like normal backstage passes' do
+        expect(@items[14].sell_in).to eq 14
+        expect(@items[14].quality).to eq 11
       end
     end
   end
