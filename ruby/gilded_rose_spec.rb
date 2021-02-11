@@ -75,45 +75,49 @@ describe GildedRose do
     end
 
     describe "Backstage passes" do
-      items = [
-        Item.new("Backstage passes to a TAFKAL80ETC concert", 11, 10),
-        Item.new("Backstage passes to a TAFKAL80ETC concert", 11, 50)
-      ]
-      guilded_rose = GildedRose.new(items)
-      backstage_passes = items[0]
-      quality_backstage = items[1]
+      before(:each) do
+        items = [
+          Item.new("Backstage passes to a TAFKAL80ETC concert", 11, 10),
+          Item.new("Backstage passes to a TAFKAL80ETC concert", 11, 50)
+        ]
+        @guilded_rose = GildedRose.new(items)
+        @backstage_passes = items[0]
+        @quality_backstage = items[1]
+      end
 
       it 'quality never goes above 50' do
-        guilded_rose.update_quality()
+        @guilded_rose.update_quality()
 
-        expect(quality_backstage.sell_in).to eq 10
-        expect(quality_backstage.quality).to eq 50
+        expect(@quality_backstage.sell_in).to eq 10
+        expect(@quality_backstage.quality).to eq 50
       end
 
       it 'increases in quality if 11 or more days to sell' do
-        expect(backstage_passes.sell_in).to eq 10
-        expect(backstage_passes.quality).to eq 11
+        @guilded_rose.update_quality()
+
+        expect(@backstage_passes.sell_in).to eq 10
+        expect(@backstage_passes.quality).to eq 11
       end
 
       it 'increases in quality by 2 if 10 or less days to sell' do
-        guilded_rose.update_quality()
+        2.times { @guilded_rose.update_quality() }
 
-        expect(backstage_passes.sell_in).to eq 9
-        expect(backstage_passes.quality).to eq 13
+        expect(@backstage_passes.sell_in).to eq 9
+        expect(@backstage_passes.quality).to eq 13
       end
 
       it 'increases in quality by 3 if 5 or less days to sell' do
-        5.times { guilded_rose.update_quality() }
+        7.times { @guilded_rose.update_quality() }
 
-        expect(backstage_passes.sell_in).to eq 4
-        expect(backstage_passes.quality).to eq 24
+        expect(@backstage_passes.sell_in).to eq 4
+        expect(@backstage_passes.quality).to eq 24
       end
 
       it 'quality drops to 0 after event' do
-        5.times { guilded_rose.update_quality() }
+        12.times { @guilded_rose.update_quality() }
 
-        expect(backstage_passes.sell_in).to eq -1
-        expect(backstage_passes.quality).to eq 0
+        expect(@backstage_passes.sell_in).to eq -1
+        expect(@backstage_passes.quality).to eq 0
       end
     end
 
