@@ -60,15 +60,17 @@ describe GildedRose do
     end
 
     describe "Sulfuras" do
-      items = [ Item.new("Sulfuras, Hand of Ragnaros", 0, 80) ]
-      guilded_rose = GildedRose.new(items)
-      sulfuras = items[0]
+      before(:each) do
+        items = [ Item.new("Sulfuras, Hand of Ragnaros", 0, 80) ]
+        @guilded_rose = GildedRose.new(items)
+        @sulfuras = items[0]
+      end
 
       it 'never decreases in quality' do
-        guilded_rose.update_quality()
+        @guilded_rose.update_quality()
 
-        expect(sulfuras.sell_in).to eq 0
-        expect(sulfuras.quality).to eq 80
+        expect(@sulfuras.sell_in).to eq 0
+        expect(@sulfuras.quality).to eq 80
       end
     end
 
