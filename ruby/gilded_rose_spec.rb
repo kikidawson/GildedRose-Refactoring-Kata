@@ -19,8 +19,8 @@ describe GildedRose do
       Item.new("Conjured Aged Brie", 10, 45),
       Item.new("Conjured Backstage passes to a TAFKAL80ETC concert", 15, 10),
     ]
-    guilded_rose = GildedRose.new(@items)
-    guilded_rose.update_quality()
+    gilded_rose = GildedRose.new(@items)
+    gilded_rose.update_quality()
   end
 
   describe "#update_quality" do
