@@ -38,22 +38,24 @@ describe GildedRose do
     end
 
     describe 'Aged Brie' do
-      items = [ Item.new("Aged Brie", 10, 45) ]
-      guilded_rose = GildedRose.new(items)
-      aged_brie = items[0]
+      before(:each) do
+        items = [ Item.new("Aged Brie", 10, 45) ]
+        @guilded_rose = GildedRose.new(items)
+        @aged_brie = items[0]
+      end
 
       it 'increases in quality' do
-        guilded_rose.update_quality()
+        @guilded_rose.update_quality()
 
-        expect(aged_brie.sell_in).to eq 9
-        expect(aged_brie.quality).to eq 46
+        expect(@aged_brie.sell_in).to eq 9
+        expect(@aged_brie.quality).to eq 46
       end
 
       it 'quality never goes above 50' do
-        5.times { guilded_rose.update_quality() }
+        6.times { @guilded_rose.update_quality() }
 
-        expect(aged_brie.sell_in).to eq 4
-        expect(aged_brie.quality).to eq 50
+        expect(@aged_brie.sell_in).to eq 4
+        expect(@aged_brie.quality).to eq 50
       end
     end
 
