@@ -12,37 +12,43 @@ class GildedRose
 
   private
 
+  def sulfuras?(item)
+    item.name == "Sulfuras, Hand of Ragnaros"
+  end
+
   def update_sell_in_and_quality(item)
     item.sell_in -= 1
-    change_quality_if_between_zero_and_fifty(item)
+    update_quality(item) if item.quality.between?(1, 49)
   end
 
-  def change_quality_if_between_zero_and_fifty(item)
-    find_logic(item) if item.quality.between?(1, 49)
-  end
-
-  def find_logic(item)
-    if aged_brie?(item)
+  def update_quality(item)
+    if aged_brie?(item) || conjured_aged_brie?(item)
       update_quality_of_aged_brie(item)
-    elsif backstage_passes?(item)
+    elsif backstage_passes?(item) || conjured_backstage_passes?(item)
       update_quality_of_backstage_passes(item)
-    elsif item.name.start_with?("Conjured ")
-      update_quality_of_conjured(item)
     else
       update_quality_of_standard_item(item)
     end
   end
 
-  def sulfuras?(item)
-    item.name == "Sulfuras, Hand of Ragnaros"
+  def aged_brie?(item)
+    item.name == "Aged Brie"
   end
 
-  def aged_brie?(item)
-    item.name.include?("Aged Brie")
+  def conjured_aged_brie?(item)
+    item.name == "Conjured Aged Brie"
   end
 
   def backstage_passes?(item)
-    item.name.include?("Backstage passes to a TAFKAL80ETC concert")
+    item.name == "Backstage passes to a TAFKAL80ETC concert"
+  end
+
+  def conjured_backstage_passes?(item)
+    item.name == "Conjured Backstage passes to a TAFKAL80ETC concert"
+  end
+
+  def conjured?(item)
+    item.name.start_with?("Conjured ")
   end
 
   def update_quality_of_aged_brie(item)
@@ -56,12 +62,13 @@ class GildedRose
     plus_quality(item) if days_until_sell_by(item, 5)
   end
 
-  def update_quality_of_conjured(item)
-    minus_quality(item, 2)
-    minus_quality(item, 2) if days_until_sell_by(item, 0)
+  def update_quality_of_standard_item(item)
+    minus_quality(item, 1)
+    minus_quality(item, 1) if days_until_sell_by(item, 0)
+    update_quality_of_conjured(item) if conjured?(item)
   end
 
-  def update_quality_of_standard_item(item)
+  def update_quality_of_conjured(item)
     minus_quality(item, 1)
     minus_quality(item, 1) if days_until_sell_by(item, 0)
   end
