@@ -1,42 +1,42 @@
-require File.join(File.dirname(__FILE__), 'gilded_rose')
+# frozen_string_literal: true
+
+require 'gilded_rose'
 
 describe GildedRose do
   before(:each) do
     @items = [
-      Item.new("Standard Item", 5, 10),
-      Item.new("Standard Item", 0, 10),
-      Item.new("Standard Item", 5, 0),
-      Item.new("Sulfuras, Hand of Ragnaros", 0, 80),
-      Item.new("Aged Brie", 10, 45),
-      Item.new("Aged Brie", 10, 50),
-      Item.new("Backstage passes to a TAFKAL80ETC concert", 15, 10),
-      Item.new("Backstage passes to a TAFKAL80ETC concert", 20, 50),
-      Item.new("Backstage passes to a TAFKAL80ETC concert", 10, 10),
-      Item.new("Backstage passes to a TAFKAL80ETC concert", 5, 10),
-      Item.new("Backstage passes to a TAFKAL80ETC concert", 0, 10),
-      Item.new("Conjured Standard Item", 10, 10),
-      Item.new("Conjured Standard Item", 0, 10),
-      Item.new("Conjured Aged Brie", 10, 45),
-      Item.new("Conjured Backstage passes to a TAFKAL80ETC concert", 15, 10),
+      Item.new('Standard Item', 5, 10),
+      Item.new('Standard Item', 0, 10),
+      Item.new('Standard Item', 5, 0),
+      Item.new('Sulfuras, Hand of Ragnaros', 0, 80),
+      Item.new('Aged Brie', 10, 45),
+      Item.new('Aged Brie', 10, 50),
+      Item.new('Backstage passes to a TAFKAL80ETC concert', 15, 10),
+      Item.new('Backstage passes to a TAFKAL80ETC concert', 20, 50),
+      Item.new('Backstage passes to a TAFKAL80ETC concert', 10, 10),
+      Item.new('Backstage passes to a TAFKAL80ETC concert', 5, 10),
+      Item.new('Backstage passes to a TAFKAL80ETC concert', 0, 10),
+      Item.new('Conjured Standard Item', 10, 10),
+      Item.new('Conjured Standard Item', 0, 10),
+      Item.new('Conjured Aged Brie', 10, 45),
+      Item.new('Conjured Backstage passes to a TAFKAL80ETC concert', 15, 10)
     ]
     gilded_rose = GildedRose.new(@items)
-    gilded_rose.update_quality()
+    gilded_rose.update_quality
   end
 
-  describe "#update_quality" do
-
+  describe '#update_quality' do
     describe 'Standard Item' do
-
-      it "does not change the name" do
-        expect(@items[0].name).to eq "Standard Item"
+      it 'does not change the name' do
+        expect(@items[0].name).to eq 'Standard Item'
       end
 
-      it "decrease sell_in and quality by one before sell by" do
+      it 'decrease sell_in and quality by one before sell by' do
         expect(@items[0].sell_in).to eq 4
         expect(@items[0].quality).to eq 9
       end
 
-      it "decrease quality by two after sell by" do
+      it 'decrease quality by two after sell by' do
         expect(@items[1].sell_in).to eq(-1)
         expect(@items[1].quality).to eq 8
       end
@@ -47,16 +47,14 @@ describe GildedRose do
       end
     end
 
-    describe "Sulfuras" do
-
+    describe 'sulfuras' do
       it 'never decreases in quality' do
         expect(@items[3].sell_in).to eq 0
         expect(@items[3].quality).to eq 80
       end
     end
 
-    describe 'Aged Brie' do
-
+    describe 'aged brie' do
       it 'increases in quality' do
         expect(@items[4].sell_in).to eq 9
         expect(@items[4].quality).to eq 46
@@ -68,8 +66,7 @@ describe GildedRose do
       end
     end
 
-    describe "Backstage passes" do
-
+    describe 'backstage passes' do
       it 'increases in quality if 11 or more days to sell' do
         expect(@items[6].sell_in).to eq 14
         expect(@items[6].quality).to eq 11
@@ -91,19 +88,19 @@ describe GildedRose do
       end
 
       it 'quality drops to 0 after event' do
-        expect(@items[10].sell_in).to eq -1
+        expect(@items[10].sell_in).to eq(-1)
         expect(@items[10].quality).to eq 0
       end
     end
 
-    describe 'Conjured items' do
+    describe 'conjured items' do
       it 'degrades in quality by 2 before sell by' do
         expect(@items[11].sell_in).to eq 9
         expect(@items[11].quality).to eq 8
       end
 
       it 'degrades in quality by 4 after sell by' do
-        expect(@items[12].sell_in).to eq -1
+        expect(@items[12].sell_in).to eq(-1)
         expect(@items[12].quality).to eq 6
       end
 

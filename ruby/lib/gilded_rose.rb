@@ -1,10 +1,11 @@
-class GildedRose
+# frozen_string_literal: true
 
+class GildedRose
   def initialize(items)
     @items = items
   end
 
-  def update_quality()
+  def update_quality
     @items.each do |item|
       update_sell_in_and_quality(item) unless sulfuras?(item)
     end
@@ -13,7 +14,7 @@ class GildedRose
   private
 
   def sulfuras?(item)
-    item.name == "Sulfuras, Hand of Ragnaros"
+    item.name == 'Sulfuras, Hand of Ragnaros'
   end
 
   def update_sell_in_and_quality(item)
@@ -32,23 +33,23 @@ class GildedRose
   end
 
   def aged_brie?(item)
-    item.name == "Aged Brie"
+    item.name == 'Aged Brie'
   end
 
   def conjured_aged_brie?(item)
-    item.name == "Conjured Aged Brie"
+    item.name == 'Conjured Aged Brie'
   end
 
   def backstage_passes?(item)
-    item.name == "Backstage passes to a TAFKAL80ETC concert"
+    item.name == 'Backstage passes to a TAFKAL80ETC concert'
   end
 
   def conjured_backstage_passes?(item)
-    item.name == "Conjured Backstage passes to a TAFKAL80ETC concert"
+    item.name == 'Conjured Backstage passes to a TAFKAL80ETC concert'
   end
 
   def conjured?(item)
-    item.name.start_with?("Conjured ")
+    item.name.start_with?('Conjured ')
   end
 
   def update_quality_of_aged_brie(item)
@@ -57,6 +58,7 @@ class GildedRose
 
   def update_quality_of_backstage_passes(item)
     return item.quality = 0 if days_until_sell_by(item, 0)
+
     plus_quality(item)
     plus_quality(item) if days_until_sell_by(item, 10)
     plus_quality(item) if days_until_sell_by(item, 5)
