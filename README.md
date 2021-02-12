@@ -21,7 +21,7 @@ $ rubocop
 
 ## Program in action
 
-![Screenshot of IRB](./images/irb_screenshot.png)
+![Screenshot of IRB](./ruby/images/irb_screenshot.png)
 
 ## Planning
 
